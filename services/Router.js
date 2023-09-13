@@ -32,18 +32,21 @@ const Router = {
         break;
       default:
         if (route.startsWith("/product-")) {
-          pageElement = document.createElement("detail-page");
-          const paramId = route.substring();
+          pageElement = document.createElement("details-page");
+          const paramId = route.substring(route.lastIndexOf("-") + 1);
+          pageElement.dataset.productId = paramId;
+          console.log(paramId);
         } else {
           pageElement.textContent = "404 - Page not found ";
         }
         break;
     }
-
-    const main = document.querySelector("main");
-    main.innerHTML = "";
-    main.appendChild(pageElement);
-    window.scrollTo({ left: 0, top: 0 });
+    if (pageElement) {
+      const main = document.querySelector("main");
+      main.innerHTML = "";
+      main.appendChild(pageElement);
+      window.scrollTo({ left: 0, top: 0 });
+    }
   },
 };
 export default Router;
