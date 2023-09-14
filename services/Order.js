@@ -4,7 +4,7 @@ import { getProductById } from "./Menu.js";
 // PUSH POR EJ, NO TRIGGEREA
 export async function addToCart(id) {
   const product = await getProductById(id);
-  console.log("items added=>", app.store.cart);
+  //   console.log("items added=>", app.store.cart);
   const exists = app.store.cart.filter((item) => item.product.id === id);
   if (exists.length) {
     app.store.cart = app.store.cart.map((c) =>
@@ -14,6 +14,6 @@ export async function addToCart(id) {
     app.store.cart = [...app.store.cart, { product, qty: 1 }];
   }
 }
-export function remove(id) {
+export function removeFromCart(id) {
   app.store.cart = app.store.cart.filter((c) => c.product.id !== id);
 }

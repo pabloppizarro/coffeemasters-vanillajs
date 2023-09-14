@@ -21,6 +21,12 @@ export class MenuPage extends HTMLElement {
     //Inyectamos el nuevo componente en el DOM
     this.root.appendChild(content);
 
+    //ya es este es otro DOM (shadow DOM). Para poder luego escuchar estos
+    // eventos en otra parte de la app, deben ser registrados a nivel mas
+    //global, es decir a nivel window.
+
+    //si hacemos document.addEventListener(...) cuando intentemos acceder
+    //desde otro lado no vamos a poder ya que el `document` es otro DOM.
     window.addEventListener("appmenuchange", () => {
       this.render();
     });
