@@ -1,4 +1,11 @@
 export class OrderPage extends HTMLElement {
+  //JS VANILLA PRIVATE PROPERTY
+  #user = {
+    name: "",
+    phone: "",
+    email: "",
+  };
+
   constructor() {
     super();
 
@@ -19,6 +26,8 @@ export class OrderPage extends HTMLElement {
     window.addEventListener("appcartchange", () => {
       this.render();
     });
+    //PORQUE ESTO ACA? Porque cada vez que conectamos el componente al DOM,
+    //Tenemos que hacer que renderize el contenido y UI
     this.render();
   }
 
@@ -56,7 +65,35 @@ export class OrderPage extends HTMLElement {
     <p class="price-total">$${total.toFixed(2)}</p>
     </li>
     `;
+
+      this.setFormBindings(this.root.querySelector("form"));
     }
+  }
+
+  //Doble Bindeo de formulario.
+  setFormBindings(form) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      alert(`Thanks for your Order ${this.#user.name}`);
+      this.#user.name = "";
+      this.#user.phone = "";
+      this.#user.email = "";
+      //TODO SEND DATA TO SERVER
+    });
+
+    this.#user = new Proxy(this.#user, {
+      set(target, property, value) {
+        target[property] = value;
+        form.elements[property].value = value;
+        return true;
+      },
+    });
+
+    Array.from(form.elements).forEach((element) => {
+      element.addEventListener("change", (event) => {
+        this.#user[element.name] = element.value;
+      });
+    });
   }
 }
 
